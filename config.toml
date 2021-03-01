@@ -1,4 +1,4 @@
-title = "Lewis's blog"
+title = "Lewis's website"
 baseURL = "/hugo-website"
 languageCode = "en-us"
 theme = "gohugo-theme-ananke"
