@@ -1,13 +1,13 @@
 title = "Lewis's website"
 baseURL = "/hugo-website"
-languageCode = "en-us"
+languageCode = "zh-cn"
 theme = "gohugo-theme-ananke"
 themesDir = "themes"
 
 MetaDataFormat = "yaml"
-DefaultContentLanguage = "en"
+DefaultContentLanguage = "zh"
 SectionPagesMenu = "main"
-Paginate = 3 # this is set low for demonstrating with dummy content. Set to a higher number
+Paginate = 1 # this is set low for demonstrating with dummy content. Set to a higher number
 googleAnalytics = ""
 enableRobotsTXT = true
 
