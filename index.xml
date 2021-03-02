@@ -5,7 +5,7 @@
     <link>/hugo-website/</link>
     <description>Recent content in Able was I before I saw Elba. on Lewis&#39;s website</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <language>zh-cn</language>
     <lastBuildDate>Fri, 14 Apr 2017 11:25:05 -0400</lastBuildDate>
     
 	<atom:link href="/hugo-website/index.xml" rel="self" type="application/rss+xml" />
@@ -74,7 +74,7 @@ The sixth of January, 1482, is not, however, a day of which history has preserve
       
       <guid>/hugo-website/contact/</guid>
       <description>This is an example of a custom shortcode that you can put right into your content. You will need to add a form action to the the shortcode to make it work. Check out Formspree for a simple, free form service.
-Your Name Email Address An email address is required.  Message   </description>
+你的名字 电邮地址 需要电子邮件地址。  信息   </description>
     </item>
     
   </channel>
