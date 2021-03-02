@@ -10,13 +10,6 @@
   </url>
   
   <url>
-    <loc>/hugo-website/tags/scene/</loc>
-    <lastmod>2021-03-02T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>/hugo-website/post/chapter-1/</loc>
     <lastmod>2021-03-02T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
@@ -25,6 +18,13 @@
   
   <url>
     <loc>/hugo-website/tags/</loc>
+    <lastmod>2021-03-02T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>/hugo-website/tags/%E8%8A%AF%E7%89%87%E9%AA%8C%E8%AF%81/</loc>
     <lastmod>2021-03-02T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -46,6 +46,13 @@
   
   <url>
     <loc>/hugo-website/post/chapter-4/</loc>
+    <lastmod>2017-04-12T11:14:48-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>/hugo-website/tags/scene/</loc>
     <lastmod>2017-04-12T11:14:48-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
