@@ -35,7 +35,7 @@
 <meta itemprop="description" content="含有处理器的系统">
 <meta itemprop="datePublished" content="2021-03-02T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2021-03-02T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="12">
+<meta itemprop="wordCount" content="25">
 
 
 
@@ -175,8 +175,17 @@
       
     </header>
     <div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><h1 id="标题一">标题一</h1>
-<p>正文</p>
-<h2 id="标题二">标题二</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#</span><span style="color:#75715e">define tube_printf(…)                                  \</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span><span style="color:#75715e">do                                                      \</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span><span style="color:#75715e">{                                                       \</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span><span style="color:#75715e">  sprintf(tube_printf_cache,__VA_ARGS__);               \</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span><span style="color:#75715e">  p_tube_printf_cache = &amp;tube_printf_cache[0];          \</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span><span style="color:#75715e">  do                                                    \</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span><span style="color:#75715e">    tube_output_char(*p_tube_printf_cache++);           \</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span><span style="color:#75715e">  while((*p_tube_printf_cache) != &#39;\0&#39;);                \</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span><span style="color:#75715e">}                                                       \</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span><span style="color:#75715e">while(0)</span><span style="color:#75715e">
+</span></code></pre></div><h2 id="标题二">标题二</h2>
 <p>正文</p>
 <h3 id="标题三">标题三</h3>
 <p>正文</p>
