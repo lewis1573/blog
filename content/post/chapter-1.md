@@ -8,7 +8,18 @@ title: "System Verilog与 C语言统一验证环境（一）"
 
 # 标题一
 
-正文
+```c
+#define tube_printf(…)                                  \
+do                                                      \
+{                                                       \
+  sprintf(tube_printf_cache,__VA_ARGS__);               \
+  p_tube_printf_cache = &tube_printf_cache[0];          \
+  do                                                    \
+    tube_output_char(*p_tube_printf_cache++);           \
+  while((*p_tube_printf_cache) != '\0');                \
+}                                                       \
+while(0)
+```
 
 ## 标题二
 
