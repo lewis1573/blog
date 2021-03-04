@@ -142,7 +142,7 @@
       </a>
     </h1>
     <div class="nested-links f5 lh-copy nested-copy-line-height">
-      标题一 #define tube_printf(…) \do \{ \sprintf(tube_printf_cache,__VA_ARGS__); \p_tube_printf_cache = &amp;tube_printf_cache[0]; \do \tube_output_char(*p_tube_printf_cache++); \while((*p_tube_printf_cache) != &#39;\0&#39;); \} \while(0)标题二 正文
+      标题一 #include &lt;stdarg.h&gt;#include &lt;stdio.h&gt; #define MAX_CHAR_NUM 256#define TUBE_ADDRESS 0x13000000u char tube_printf_buffer[MAX_CHAR_NUM]; char * p_tube_printf_buffer; volatile unsigned char * p_tube = (volatile unsigned char *)TUBE_ADDRESS; void tube_output_char(char output) { *p_tube = output; } void tube_printf(const char* fmt, ...) { va_list argptr; va_start(argptr, fmt); vsnprintf(tube_printf_buffer, MAX_CHAR_NUM, fmt, argptr); va_end(argptr); p_tube_printf_buffer = &amp;tube_printf_buffer[0]; do tube_output_char(*p_tube_printf_buffer++); while((*p_tube_printf_buffer) != &#39;\0&#39;); } 标题二 正文
 标题三 正文
  yinyong;
 neirong
