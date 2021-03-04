@@ -9,16 +9,33 @@ title: "System Verilog与 C语言统一验证环境（一）"
 # 标题一
 
 ```c
-#define tube_printf(…)                                  \
-do                                                      \
-{                                                       \
-  sprintf(tube_printf_cache,__VA_ARGS__);               \
-  p_tube_printf_cache = &tube_printf_cache[0];          \
-  do                                                    \
-    tube_output_char(*p_tube_printf_cache++);           \
-  while((*p_tube_printf_cache) != '\0');                \
-}                                                       \
-while(0)
+#include <stdarg.h>
+#include <stdio.h>
+
+#define MAX_CHAR_NUM 256
+#define TUBE_ADDRESS 0x13000000u
+
+char tube_printf_buffer[MAX_CHAR_NUM];
+char * p_tube_printf_buffer;
+volatile unsigned char * p_tube = (volatile unsigned char *)TUBE_ADDRESS;
+
+void tube_output_char(char output)
+{
+    *p_tube = output;
+}
+
+void tube_printf(const char* fmt, ...)
+{
+    va_list argptr;
+    va_start(argptr, fmt);
+    vsnprintf(tube_printf_buffer, MAX_CHAR_NUM, fmt, argptr);
+    va_end(argptr);
+
+    p_tube_printf_buffer = &tube_printf_buffer[0];
+    do
+        tube_output_char(*p_tube_printf_buffer++);
+    while((*p_tube_printf_buffer) != '\0');
+}
 ```
 
 ## 标题二
