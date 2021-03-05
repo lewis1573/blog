@@ -17,13 +17,7 @@
       <pubDate>Tue, 02 Mar 2021 00:00:00 +0000</pubDate>
       
       <guid>/hugo-website/post/chapter-1/</guid>
-      <description>标题一 #include &amp;lt;stdarg.h&amp;gt;#include &amp;lt;stdio.h&amp;gt; #define MAX_CHAR_NUM 256#define TUBE_ADDRESS 0x13000000u char tube_printf_buffer[MAX_CHAR_NUM]; char * p_tube_printf_buffer; volatile unsigned char * p_tube = (volatile unsigned char *)TUBE_ADDRESS; void tube_output_char(char output) { *p_tube = output; } void tube_printf(const char* fmt, ...) { va_list argptr; va_start(argptr, fmt); vsnprintf(tube_printf_buffer, MAX_CHAR_NUM, fmt, argptr); va_end(argptr); p_tube_printf_buffer = &amp;amp;tube_printf_buffer[0]; do tube_output_char(*p_tube_printf_buffer++); while((*p_tube_printf_buffer) != &amp;#39;\0&amp;#39;); } 标题二 正文
-标题三 正文
- yinyong;
-neirong
-前面四个空格
-two space before
- </description>
+      <description>标题一 axi_slv.monitor.item_observed_port.connect(tube.analysis_export); class tube extends uvm_subscriber#(svt_axi_transaction); #include &amp;lt;stdarg.h&amp;gt;#include &amp;lt;stdio.h&amp;gt; #define MAX_CHAR_NUM 256#define TUBE_ADDRESS 0x13000000u char tube_printf_buffer[MAX_CHAR_NUM]; char * p_tube_printf_buffer; volatile char * p_tube = (volatile char *)TUBE_ADDRESS; void tube_output_char(char output) { *p_tube = output; } void tube_printf(const char* fmt, ...) { va_list argptr; va_start(argptr, fmt); vsnprintf(tube_printf_buffer, MAX_CHAR_NUM, fmt, argptr); va_end(argptr); p_tube_printf_buffer = &amp;amp;tube_printf_buffer[0]; do tube_output_char(*p_tube_printf_buffer++); while((*p_tube_printf_buffer) != &amp;#39;\0&amp;#39;); } //write CTRL-D (EOT charactter) //which causes the simulation to terminate void tube_exit(void) { tube_output_char(&amp;#39;\x04&amp;#39;); //loop forever until the simulator terminates  while(1); } 标题二 正文</description>
     </item>
     
     <item>

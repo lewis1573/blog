@@ -35,7 +35,7 @@
 <meta itemprop="description" content="含有处理器的系统">
 <meta itemprop="datePublished" content="2021-03-02T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2021-03-02T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="66">
+<meta itemprop="wordCount" content="91">
 
 
 
@@ -175,7 +175,11 @@
       
     </header>
     <div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><h1 id="标题一">标题一</h1>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#</span><span style="color:#75715e">include</span> <span style="color:#75715e">&lt;stdarg.h&gt;</span><span style="color:#75715e">
+<pre><code>axi_slv.monitor.item_observed_port.connect(tube.analysis_export);
+
+</code></pre><pre><code>class tube extends uvm_subscriber#(svt_axi_transaction);
+
+</code></pre><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#</span><span style="color:#75715e">include</span> <span style="color:#75715e">&lt;stdarg.h&gt;</span><span style="color:#75715e">
 </span><span style="color:#75715e"></span><span style="color:#75715e">#</span><span style="color:#75715e">include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
 </span><span style="color:#75715e"></span>
 <span style="color:#75715e">#</span><span style="color:#75715e">define MAX_CHAR_NUM 256</span><span style="color:#75715e">
@@ -183,7 +187,7 @@
 </span><span style="color:#75715e"></span>
 <span style="color:#66d9ef">char</span> tube_printf_buffer[MAX_CHAR_NUM];
 <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span> p_tube_printf_buffer;
-<span style="color:#66d9ef">volatile</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span> p_tube <span style="color:#f92672">=</span> (<span style="color:#66d9ef">volatile</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>)TUBE_ADDRESS;
+<span style="color:#66d9ef">volatile</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span> p_tube <span style="color:#f92672">=</span> (<span style="color:#66d9ef">volatile</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>)TUBE_ADDRESS;
 
 <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tube_output_char</span>(<span style="color:#66d9ef">char</span> output)
 {
@@ -201,6 +205,15 @@
     <span style="color:#66d9ef">do</span>
         tube_output_char(<span style="color:#f92672">*</span>p_tube_printf_buffer<span style="color:#f92672">+</span><span style="color:#f92672">+</span>);
     <span style="color:#66d9ef">while</span>((<span style="color:#f92672">*</span>p_tube_printf_buffer) <span style="color:#f92672">!</span><span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">\0</span><span style="color:#e6db74">&#39;</span>);
+}
+
+<span style="color:#75715e">//write CTRL-D (EOT charactter)
+</span><span style="color:#75715e"></span><span style="color:#75715e">//which causes the simulation to terminate
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tube_exit</span>(<span style="color:#66d9ef">void</span>)
+{
+    tube_output_char(<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#e6db74">\x04</span><span style="color:#e6db74">&#39;</span>);
+    <span style="color:#75715e">//loop forever until the simulator terminates
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">while</span>(<span style="color:#ae81ff">1</span>);
 }
 </code></pre></div><h2 id="标题二">标题二</h2>
 <p>正文</p>
