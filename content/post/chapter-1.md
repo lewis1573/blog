@@ -8,6 +8,16 @@ title: "System Verilog与 C语言统一验证环境（一）"
 
 # 标题一
 
+```
+axi_slv.monitor.item_observed_port.connect(tube.analysis_export);
+
+```
+
+```
+class tube extends uvm_subscriber#(svt_axi_transaction);
+
+```
+
 ```c
 #include <stdarg.h>
 #include <stdio.h>
@@ -17,7 +27,7 @@ title: "System Verilog与 C语言统一验证环境（一）"
 
 char tube_printf_buffer[MAX_CHAR_NUM];
 char * p_tube_printf_buffer;
-volatile unsigned char * p_tube = (volatile unsigned char *)TUBE_ADDRESS;
+volatile char * p_tube = (volatile char *)TUBE_ADDRESS;
 
 void tube_output_char(char output)
 {
@@ -35,6 +45,15 @@ void tube_printf(const char* fmt, ...)
     do
         tube_output_char(*p_tube_printf_buffer++);
     while((*p_tube_printf_buffer) != '\0');
+}
+
+//write CTRL-D (EOT charactter)
+//which causes the simulation to terminate
+void tube_exit(void)
+{
+    tube_output_char('\x04');
+    //loop forever until the simulator terminates
+    while(1);
 }
 ```
 
