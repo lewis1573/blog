@@ -20,14 +20,5 @@
       <description>标题一 axi_slv.monitor.item_observed_port.connect(tube.analysis_export); class tube extends uvm_subscriber#(svt_axi_transaction); #include &amp;lt;stdarg.h&amp;gt;#include &amp;lt;stdio.h&amp;gt; #define MAX_CHAR_NUM 256#define TUBE_ADDRESS 0x13000000u char tube_printf_buffer[MAX_CHAR_NUM]; char * p_tube_printf_buffer; volatile char * p_tube = (volatile char *)TUBE_ADDRESS; void tube_output_char(char output) { *p_tube = output; } void tube_printf(const char* fmt, ...) { va_list argptr; va_start(argptr, fmt); vsnprintf(tube_printf_buffer, MAX_CHAR_NUM, fmt, argptr); va_end(argptr); p_tube_printf_buffer = &amp;amp;tube_printf_buffer[0]; do tube_output_char(*p_tube_printf_buffer++); while((*p_tube_printf_buffer) != &amp;#39;\0&amp;#39;); } //write CTRL-D (EOT charactter) //which causes the simulation to terminate void tube_exit(void) { tube_output_char(&amp;#39;\x04&amp;#39;); //loop forever until the simulator terminates  while(1); } 标题二 正文</description>
     </item>
     
-    <item>
-      <title>Chapter VI: Esmeralda</title>
-      <link>/hugo-website/post/chapter-6/</link>
-      <pubDate>Fri, 14 Apr 2017 11:25:05 -0400</pubDate>
-      
-      <guid>/hugo-website/post/chapter-6/</guid>
-      <description>We are delighted to be able to inform the reader, that during the whole of this scene, Gringoire and his piece had stood firm. His actors, spurred on by him, had not ceased to spout his comedy, and he had not ceased to listen to it. He had made up his mind about the tumult, and was determined to proceed to the end, not giving up the hope of a return of attention on the part of the public.</description>
-    </item>
-    
   </channel>
 </rss>

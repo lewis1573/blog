@@ -31,13 +31,6 @@
   </url>
   
   <url>
-    <loc>/hugo-website/post/chapter-6/</loc>
-    <lastmod>2017-04-14T11:25:05-04:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>/hugo-website/post/</loc>
     <lastmod>2017-03-02T12:00:00-05:00</lastmod>
     <changefreq>monthly</changefreq>
