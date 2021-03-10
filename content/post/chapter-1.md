@@ -10,7 +10,10 @@ title: "System Verilog与 C语言统一验证环境（一）"
 在SOC的设计中，大部分含有处理器，比如ARM、RISC-V以及各种DSP等等，这些处理器IP基本都有成熟的编译工具链，可以方便的编译运行C代码，如果验证平台能够利用设计中的处理器本身执行C的用例，可以减少很多平台搭建的工作，同时因为C语言相对来说更加容易上手，代码在不同验证环境，包括硬件仿真平台的可复用性也更好。这里的统一验证环境指的就是在SystemVerilog及UVM搭建的验证平台中集成DUT中处理器的编译执行流程，让验证平台同时支持SystemVerilog和C语言的用例。
 
 # 实现
-SystemVerilog的验证平台在simv运行后会有打印log，如果C的用例也能够打印到SV的log中，就可以实现基本的交互，但是默认情况下使用C的printf函数并不会像我们预期的那样打印，因为printf是C语言的标准库，是由开源的C lib库或者处理器厂家实现的，它会调用操作系统底层的输出IO，如果代码运行在完整的linux主机上，那么就会打印到终端窗口中，但是我们的DUT一般没有标准输出IO，所以需要将printf重写，让printf输出到某一个固定的地址，比如一块RAM区域，然后让SystemVerilog监测这个地址，如果有写操作，将写的内容打印出来，这样C的printf信息就能够和SystemVerilog的打印信息一起保存到log里了。这样C的环境就需要重新实现printf，SystemVerilog需要实现对一个地址写访问的检测并打印，下面分别详细说明：
+SystemVerilog的验证平台在simv运行后会有打印log，一般会通过log检查case的运行结果，如果C的用例也能够打印到SV的log中，就可以实现基本的统一验证环境，但是默认情况下使用C的printf函数并不会像我们预期的那样打印，因为printf是C语言的标准库，是由开源的C lib库或者处理器厂家实现的，它会调用操作系统底层的输出IO，如果代码运行在完整的linux主机上，那么就会打印到终端窗口中，但是我们的DUT一般没有标准输出IO，所以需要将printf重写，让printf输出到某一个固定的地址，比如一块可读可写的memory区域，然后让SystemVerilog监测这个地址，如果有写操作，将写的内容打印出来，这样C的printf信息就能够和SystemVerilog的打印信息一起打印到log里了。这样整个流程需要一块memory作为管道，C的环境需要重新实现printf，SystemVerilog需要实现对一个地址写访问的检测并打印，下面分别详细说明：
+
+## 管道
+处理器一般会提供AXI接口，Synopsis的AXI验证IP（VIP）实现了axi_slave_agent，在这个agent中就包含了一块memory，配置了正确的地址后，对axi slave vip的访问就是对这块memory的读写了。这样将axi slave vip连接到处理器的AXI接口，接口地址范围内的任意一个地址都可以作为C和Systemvirlog通信的管道。
 
 ## 重写C的printf
 从0实现一个printf还是比较复杂的，感兴趣的可以自行网上搜索，这里本着不重新造轮子的原则，利用现有的工具。不同的处理器可能会选择不同的编译工具链，不管是GCC还是Clang，会有不同C的标准库，如果是arm使用GCC的工具链，那就会比较简单，网上也有很多资料，通过重写`_write`函数重定向printf，这里就不再赘述。如果是其他的，比如我遇到的DSP，使用Clang，它的标准库实现就没有`_write`接口让我去重写，虽然实现机制不同，但是作为标准库，标准的函数都是完整提供的，可以利用标准库的`sprintf`，函数调用和printf一样，将需要打印的数据和字符串等格式化输出到一个`buffer`中，然后再将`buffer`中的字符输出，这样就可以免去处理要打印几个数据，以十六进制还是十进制打印等格式化的问题，`sprintf`的函数原型如下：
@@ -71,16 +74,17 @@ void tube_exit(void)
 ```
 ## 通过SystemVerilog监听和处理
 
-一般情况下用来做交互管道的RAM使用的是AXI接口，可以在这个AXI的接口上连接一个analysis_port的监听器，在这个监听器中实现自己的write函数，当监听到有数据写入时执行自己wirte函数中的代码，而不会对总线上的其他数据造成任何影响，UVM也定义了这样的类`uvm_subscriber`可以供我们直接继承。这里使用了AXI的VIP，类的申明如下：
+因为交互的管道是通过AXI slave agent实现，对管道的读写必然要经过AXI接口，所有监听自然要利用AXI接口，可以在这个AXI的接口上连接一个analysis_port的监听器，在这个监听器中实现自己的write函数，当监听到有数据写入时执行自己wirte函数中的代码，这样不会对总线上的其他数据接收方造成任何影响，UVM也定义了这样的类`uvm_subscriber`可以供我们直接继承。这里的transiction可以使用VIP提供的数据结构，类的申明如下：
 
 ```systemverilog
 class tube extends uvm_subscriber#(svt_axi_transaction);
 
 ```
+uvm_subscriber类包含一个名为write的纯虚函数，在继承后需要自己实现，在write函数中判断写操作的地址，如果是管道地址，写入的数据就是C要打印的字符，将写入的数据依次存入数组。如果检查到写入的数据是回车或者换行，则表明这句C的打印结束了，这时候就可以使用systemverilog的打印函数将数组中的所有字符，也就是C的打印信息到Systemverilog的log中了。如果检查到写入的数据是CTRL-D，也就是`\x04`则表示C的用例结束，Systemverilog可以调用drop_objection结束仿真。
 
-
-```
-axi_slv.monitor.item_observed_port.connect(tube.analysis_export);
+另外，定义的tube对象需要与axi vip连接
+```systemverilog
+axi_slave.monitor.item_observed_port.connect(tube.analysis_export);
 
 ```
 
